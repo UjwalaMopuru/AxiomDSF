@@ -1,0 +1,212 @@
+/* AxiomDSF Global Styles - Inspired by AgroSentry Aesthetic */
+
+/* --- CSS Variables --- */
+:root {
+  --primary-green: #3A7D44;
+  --light-green: #5DBB63;
+  --dark-green: #2E673A;
+  --accent-blue: #4A90D9;
+  --accent-purple: #6C63FF;
+  --background: #f4f6f8;
+  --sidebar-bg: #ffffff;
+  --card-bg: #ffffff;
+  --text-color: #333333;
+  --text-light: #f8f9fa;
+  --text-muted: #6b7280;
+  --border-color: #e0e0e0;
+  --shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  --shadow-hover: 0 8px 24px rgba(58, 125, 68, 0.15);
+  --sidebar-width: 260px;
+  --header-height: 64px;
+  --font-family: 'Poppins', sans-serif;
+  --radius: 10px;
+  --radius-sm: 6px;
+  --gradient-primary: linear-gradient(135deg, #5DBB63, #3A7D44);
+  --gradient-accent: linear-gradient(135deg, #4A90D9, #6C63FF);
+}
+
+/* --- Reset & Base --- */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html, body {
+  height: 100%;
+  font-family: var(--font-family);
+  background-color: var(--background);
+  color: var(--text-color);
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+}
+
+body { margin: 0; padding: 0; }
+
+h1,h2,h3,h4,h5,h6 { color: var(--dark-green); font-weight: 600; }
+
+a { text-decoration: none; color: var(--primary-green); }
+
+app-root {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+}
+
+/* --- Scrollbar --- */
+::-webkit-scrollbar { width: 8px; height: 8px; }
+::-webkit-scrollbar-track { background: rgba(58, 125, 68, 0.05); border-radius: 10px; }
+::-webkit-scrollbar-thumb { background: linear-gradient(180deg, var(--light-green), var(--primary-green)); border-radius: 10px; }
+::-webkit-scrollbar-thumb:hover { background: var(--dark-green); }
+
+/* --- Material-free: custom form focus colors --- */
+input:focus, textarea:focus, select:focus {
+  outline: none;
+  border-color: var(--primary-green) !important;
+  box-shadow: 0 0 0 3px rgba(58, 125, 68, 0.1);
+}
+
+/* --- Animations --- */
+@keyframes bounceIn {
+  0% { transform: scale(0.5); opacity: 0; }
+  60% { transform: scale(1.05); opacity: 1; }
+  100% { transform: scale(1); }
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes slideIn {
+  from { opacity: 0; transform: translateX(-10px); }
+  to { opacity: 1; transform: translateX(0); }
+}
+
+.bounce-in { animation: bounceIn 0.6s ease-out; }
+.fade-in { animation: fadeIn 0.4s ease-out; }
+
+/* --- Snackbar Styles --- */
+.success-snackbar .mdc-snackbar__surface { background: var(--primary-green) !important; }
+.error-snackbar .mdc-snackbar__surface { background: #EF4444 !important; }
+
+/* --- Gradient Utility --- */
+.gradient-box {
+  background: var(--gradient-primary);
+  color: var(--text-light);
+  padding: 20px;
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+.gradient-box:hover { transform: translateY(-5px); box-shadow: var(--shadow-hover); }
+.gradient-box h3, .gradient-box h4, .gradient-box p { color: var(--text-light); }
+
+html { scroll-behavior: smooth; }
+
+/* Loading Animation */
+@keyframes gradientShift {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+.gradient-text {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 50%, #f9a8d4 100%);
+  background-size: 200% 200%;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  animation: gradientShift 3s ease infinite;
+}
+
+/* Card Hover Effects */
+.mat-mdc-card:hover {
+  box-shadow: 0 8px 24px rgba(102, 126, 234, 0.15);
+  transform: translateY(-2px);
+  transition: all 0.3s ease;
+}
+
+/* Button Styles */
+.mat-mdc-button, .mat-mdc-raised-button {
+  border-radius: 8px !important;
+  text-transform: none !important;
+  font-weight: 500 !important;
+  letter-spacing: 0.5px !important;
+}
+
+/* Icon Colors */
+mat-icon {
+  transition: color 0.3s ease;
+}
+
+/* Chip Styles */
+.mat-mdc-chip {
+  border-radius: 16px !important;
+  font-weight: 500 !important;
+}
+
+/* Table Styles */
+.mat-mdc-table {
+  border-radius: 8px !important;
+  overflow: hidden;
+  box-shadow: 0 2px 8px rgba(102, 126, 234, 0.08);
+}
+
+.mat-mdc-header-row {
+  background: linear-gradient(135deg, rgba(102, 126, 234, 0.05) 0%, rgba(249, 168, 212, 0.05) 100%);
+}
+
+.mat-mdc-row:hover {
+  background: rgba(102, 126, 234, 0.03);
+}
+
+/* Animations */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.fade-in {
+  animation: fadeIn 0.3s ease-in;
+}
+
+/* --- Dark Mode --- */
+body.dark-mode {
+  --background: #1a1a2e;
+  --card-bg: #16213e;
+  --sidebar-bg: #0f3460;
+  --text-color: #e0e0e0;
+  --text-muted: #9ca3af;
+  --border-color: #2a2a4a;
+  --shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+  --shadow-hover: 0 8px 24px rgba(0, 0, 0, 0.4);
+}
+
+body.dark-mode .login-card,
+body.dark-mode .sidebar,
+body.dark-mode .main-header,
+body.dark-mode .cli-panel {
+  background-color: var(--card-bg);
+  color: var(--text-color);
+}
+
+body.dark-mode h1, body.dark-mode h2, body.dark-mode h3,
+body.dark-mode h4, body.dark-mode h5, body.dark-mode h6 {
+  color: #e0e0e0;
+}
+
+body.dark-mode input, body.dark-mode textarea, body.dark-mode select {
+  background: #1e293b;
+  color: #e0e0e0;
+  border-color: #374151;
+}
+
+body.dark-mode a { color: var(--light-green); }
+

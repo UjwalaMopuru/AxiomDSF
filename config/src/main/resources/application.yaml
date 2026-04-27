@@ -1,0 +1,163 @@
+spring:
+  datasource:
+    url: jdbc:sqlite:data/axiomdsf.db?journal_mode=WAL
+    driver-class-name: org.sqlite.JDBC
+    hikari:
+      maximum-pool-size: 1
+
+  sql:
+    init:
+      mode: always
+      continue-on-error: true
+
+  jpa:
+    database-platform: org.hibernate.community.dialect.SQLiteDialect
+    hibernate:
+      ddl-auto: none
+    show-sql: true
+    properties:
+      hibernate:
+        format_sql: true
+
+  autoconfigure:
+    exclude: org.springframework.boot.autoconfigure.security.servlet.SecurityAutoConfiguration
+
+logging:
+  level:
+    com.mphasis: DEBUG
+    org.hibernate.SQL: DEBUG
+    org.hibernate.type.descriptor.sql.BasicBinder: TRACE
+
+# Agent execution provider: copilot-cli (default) | github-api
+agent:
+  execution:
+    provider: github-api
+    copilot-command: gh copilot
+    timeout-minutes: 240
+    # Model override for Copilot CLI agents (saves tokens during testing).
+    # Set to a cheaper model like "gpt-4.1" or "claude-haiku-4.5" for testing.
+    # Leave blank or remove to use the Copilot CLI default model.
+    model: gpt-5.3-codex
+
+  pipeline:
+    agents:
+      - agentType: REQUIREMENT
+        agentName: RequirementAnalysisRefinementAgent
+        agentFilePath: Requirement-Agent.md
+        outputDirectory: requirement
+        nextAgent: HLSAgent
+        executionOrder: 1
+        enabled: true
+        mandatory: true
+        dependencies: []
+
+      - agentType: HLS
+        agentName: HLSAgent
+        agentFilePath: High-Level-Solution-Agent.md
+        outputDirectory: hls
+        nextAgent: HLDAgent
+        executionOrder: 2
+        enabled: true
+        mandatory: true
+        dependencies:
+          - REQUIREMENT
+
+      - agentType: HLD
+        agentName: HLDAgent
+        agentFilePath: High-Level-Design-Agent.md
+        outputDirectory: hld
+        nextAgent: UserStoryAgent
+        executionOrder: 3
+        enabled: true
+        mandatory: true
+        dependencies:
+          - HLS
+          - REQUIREMENT
+
+      - agentType: USER_STORY
+        agentName: UserStoryAgent
+        agentFilePath: User-Story-Agent.md
+        outputDirectory: userstory
+        nextAgent: TRReviewAgent
+        executionOrder: 4
+        enabled: true
+        mandatory: true
+        dependencies:
+          - HLD
+
+      - agentType: TR_REVIEW
+        agentName: TRReviewAgent
+        agentFilePath: TRReviewAgent.agent.md
+        outputDirectory: trreview
+        nextAgent: LLDAgent
+        executionOrder: 5
+        enabled: true
+        mandatory: false
+        dependencies:
+          - USER_STORY
+
+      - agentType: LLD
+        agentName: LLDAgent
+        agentFilePath: Low-Level-Design-Agent.md
+        outputDirectory: lld
+        nextAgent: TDDAgent
+        executionOrder: 6
+        enabled: true
+        mandatory: true
+        dependencies:
+          - TR_REVIEW
+          - HLD
+          - USER_STORY
+
+      - agentType: TDD
+        agentName: TDDAgent
+        agentFilePath: Test-Driven-Development-Agent.md
+        outputDirectory: tdd
+        nextAgent: CodingAgent
+        executionOrder: 7
+        enabled: true
+        mandatory: false
+        dependencies:
+          - LLD
+          - TR_REVIEW
+          - USER_STORY
+
+      - agentType: CODING
+        agentName: CodingAgent
+        agentFilePath: Coding-Agent.md
+        outputDirectory: coding
+        nextAgent: StaticCodeAnalysisAgent
+        executionOrder: 8
+        enabled: true
+        mandatory: true
+        dependencies:
+          - LLD
+          - TDD
+
+      - agentType: STATIC_CODE_ANALYSIS
+        agentName: StaticCodeAnalysisAgent
+        agentFilePath: Static-Code-Analysis-Agent.md
+        outputDirectory: staticcodeanalysis
+        nextAgent: SecurityAgent
+        executionOrder: 9
+        enabled: true
+        mandatory: false
+        dependencies:
+          - CODING
+
+      - agentType: SECURITY
+        agentName: SecurityAgent
+        agentFilePath: Security-Agent.md
+        outputDirectory: security
+        nextAgent: ~
+        executionOrder: 10
+        enabled: true
+        mandatory: false
+        dependencies:
+          - CODING
+
+springdoc:
+  api-docs:
+    path: /api-docs
+  swagger-ui:
+    path: /swagger-ui.html

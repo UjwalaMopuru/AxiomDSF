@@ -1,0 +1,1 @@
+-- Tables are managed by schema.sql (CREATE TABLE IF NOT EXISTS)

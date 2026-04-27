@@ -1,0 +1,1008 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>AxiomDSF — Project Guide &amp; Tutorial</title>
+<style>
+  body { font-family: 'Segoe UI', Calibri, Arial, sans-serif; margin: 40px 60px; color: #222; line-height: 1.7; font-size: 11pt; }
+  h1 { font-size: 26pt; color: #1a3c6e; border-bottom: 3px solid #1a3c6e; padding-bottom: 8px; }
+  h2 { font-size: 18pt; color: #1a3c6e; margin-top: 36px; border-bottom: 2px solid #ccc; padding-bottom: 4px; }
+  h3 { font-size: 14pt; color: #2c5f9e; margin-top: 24px; }
+  h4 { font-size: 12pt; color: #444; margin-top: 16px; }
+  table { border-collapse: collapse; width: 100%; margin: 12px 0 20px 0; }
+  th, td { border: 1px solid #bbb; padding: 8px 12px; text-align: left; vertical-align: top; }
+  th { background-color: #e8eef6; font-weight: 600; }
+  tr:nth-child(even) { background-color: #f7f9fc; }
+  code { background: #f0f2f5; padding: 2px 6px; border-radius: 3px; font-family: Consolas, 'Courier New', monospace; font-size: 10pt; }
+  pre { background: #f5f6f8; padding: 14px 18px; border-radius: 5px; overflow-x: auto; font-family: Consolas, 'Courier New', monospace; font-size: 10pt; line-height: 1.5; border: 1px solid #ddd; }
+  .note { background: #fff8e1; border-left: 4px solid #ffb300; padding: 10px 16px; margin: 14px 0; border-radius: 3px; }
+  .tip { background: #e8f5e9; border-left: 4px solid #43a047; padding: 10px 16px; margin: 14px 0; border-radius: 3px; }
+  .warn { background: #fce4ec; border-left: 4px solid #e53935; padding: 10px 16px; margin: 14px 0; border-radius: 3px; }
+  ul, ol { margin: 6px 0 12px 0; }
+  li { margin-bottom: 4px; }
+  .toc { background: #f5f7fa; border: 1px solid #ccc; padding: 18px 28px; border-radius: 6px; margin: 20px 0 30px 0; }
+  .toc a { text-decoration: none; color: #2c5f9e; }
+  .toc a:hover { text-decoration: underline; }
+  .toc li { margin-bottom: 3px; }
+  .badge { display: inline-block; background: #e3ecf7; color: #1a3c6e; padding: 2px 10px; border-radius: 12px; font-size: 9pt; font-weight: 600; margin-right: 6px; }
+  .flow-box { background: #f5f7fa; border: 1px solid #ccc; padding: 16px; border-radius: 6px; margin: 10px 0; font-family: Consolas, monospace; font-size: 10pt; white-space: pre; line-height: 1.6; }
+  hr { border: none; border-top: 1px solid #ddd; margin: 30px 0; }
+  .page-break { page-break-before: always; }
+</style>
+</head>
+<body>
+
+<!-- ============================================================ -->
+<!-- COVER -->
+<!-- ============================================================ -->
+<div style="text-align:center; margin: 60px 0 40px 0;">
+  <h1 style="border:none; font-size: 32pt;">AxiomDSF</h1>
+  <p style="font-size:16pt; color:#555;">AI-Powered Software Development Factory</p>
+  <p style="font-size:12pt; color:#777;">Project Guide &amp; Tutorial for Incoming Team</p>
+  <p style="font-size:10pt; color:#999; margin-top:30px;">Version 1.0 &nbsp;|&nbsp; April 2026</p>
+</div>
+<hr>
+
+<!-- ============================================================ -->
+<!-- TABLE OF CONTENTS -->
+<!-- ============================================================ -->
+<div class="toc">
+<h2 style="margin-top:0; border:none;">Table of Contents</h2>
+<ol>
+  <li><a href="#sec1">GitHub Copilot &amp; GitHub CLI Configuration</a></li>
+  <li><a href="#sec2">Creating a Custom Agent</a></li>
+  <li><a href="#sec3">Invoking GitHub CLI Directly from Code</a></li>
+  <li><a href="#sec4">Axiom DSF — Core Idea &amp; Architecture</a></li>
+  <li><a href="#sec5">Design Patterns</a></li>
+  <li><a href="#sec6">Agents in the System</a></li>
+  <li><a href="#sec7">How the Orchestrator Works</a></li>
+  <li><a href="#sec8">End-to-End System Flow</a></li>
+  <li><a href="#sec9">Workflow Execution</a></li>
+  <li><a href="#sec10">Command Line Interface (CLI)</a></li>
+  <li><a href="#sec11">User Interface (Angular Frontend)</a></li>
+  <li><a href="#sec12">MCP Integration (Azure DevOps)</a></li>
+  <li><a href="#sec13">Commands to Build &amp; Run the Application</a></li>
+  <li><a href="#sec14">Project Directory Reference</a></li>
+</ol>
+</div>
+
+<!-- ============================================================ -->
+<!-- 1. GITHUB COPILOT -->
+<!-- ============================================================ -->
+<h2 id="sec1">1. GitHub Copilot &amp; GitHub CLI Configuration</h2>
+
+<h3>What is GitHub Copilot CLI?</h3>
+<p>
+GitHub Copilot is an AI-powered coding assistant. In AxiomDSF we use the <strong>Copilot CLI extension</strong>
+(<code>@github/copilot-cli</code>) to run AI agents from the command line. Each agent receives a structured
+markdown prompt and returns structured output — no IDE needed.
+</p>
+
+<h3>Prerequisites</h3>
+<ul>
+  <li><strong>Node.js &ge; 18</strong> — required for the Copilot CLI npm package.</li>
+  <li><strong>GitHub CLI (<code>gh</code>)</strong> — install from <code>https://cli.github.com</code>.</li>
+  <li><strong>Copilot CLI extension</strong> — installed via <code>gh extension install github/gh-copilot</code>.</li>
+  <li>A GitHub account with an active <strong>Copilot license</strong> (Individual, Business, or Enterprise).</li>
+</ul>
+
+<h3>Installation &amp; Login</h3>
+<pre>
+# Install GitHub CLI (Windows - winget)
+winget install --id GitHub.cli
+
+# Authenticate
+gh auth login          # Follow the browser-based OAuth flow
+
+# Install the Copilot extension
+gh extension install github/gh-copilot
+
+# Verify
+gh copilot --version
+</pre>
+
+<h3>Configuration Used in AxiomDSF</h3>
+<p>The backend knows the absolute path to the Copilot CLI binary. This is set in
+<code>config/src/main/resources/application.yaml</code>:</p>
+<pre>
+agent:
+  execution:
+    provider: copilot-cli
+    copilot-command: C:\Users\&lt;your-user&gt;\AppData\Roaming\npm\copilot.cmd
+    timeout-minutes: 60
+</pre>
+<div class="tip"><strong>Tip:</strong> Update <code>copilot-command</code> to match your local npm global path. Run <code>where copilot</code> or <code>npm root -g</code> to find it.</div>
+
+<!-- ============================================================ -->
+<!-- 2. CREATING A CUSTOM AGENT -->
+<!-- ============================================================ -->
+<h2 id="sec2">2. Creating a Custom Agent</h2>
+
+<h3>Agent Definition Files</h3>
+<p>
+Every agent is defined as a <strong>Markdown file</strong> inside <code>.github/agents/</code>.
+The file name follows the pattern <code>&lt;AgentName&gt;.agent.md</code>.
+</p>
+
+<h3>File Structure (AIM Model)</h3>
+<p>All AxiomDSF agents follow a consistent <strong>AIM Model</strong>:</p>
+<pre>
+---
+name: MyNewAgent
+description: Brief role description
+tools:
+  - view
+---
+
+&gt; OUTPUT DISCIPLINE: ONLY structured markdown. NO thinking, NO narration.
+&gt; Start directly with a # heading. Lines like "Let me..." are FORBIDDEN.
+
+# AIM MODEL
+
+## A — Act as
+Describe the agent's persona and responsibility.
+
+## I — Inputs are
+List what artifacts this agent receives.
+
+## M — Mission is
+Describe the deliverables and output format.
+
+# CORE INSTRUCTIONS
+## You MUST:
+- Rule 1
+- Rule 2
+
+## You MUST NOT:
+- Anti-pattern 1
+
+# OUTPUT TEMPLATE
+&lt;Markdown structure the agent must follow&gt;
+</pre>
+
+<h3>Step-by-Step: Adding a New Agent</h3>
+<ol>
+  <li>Create <code>.github/agents/MyNewAgent.agent.md</code> using the AIM template above.</li>
+  <li>Register the agent in <code>config/src/main/resources/application.yaml</code> under <code>agent.pipeline.agents</code>:
+<pre>
+- agentType: MY_NEW_AGENT
+  agentName: MyNewAgent
+  agentFilePath: MyNewAgent.agent.md
+  outputDirectory: mynewagent/
+  nextAgent: &lt;NextAgentName or null&gt;
+  executionOrder: 11
+  enabled: true
+  mandatory: false
+  dependencies:
+    - CODING
+</pre>
+  </li>
+  <li>Add the enum value in <code>business/.../model/AgentType.java</code>:
+<pre>MY_NEW_AGENT</pre>
+  </li>
+  <li>Register it in the CLI's <code>AgentRegistry.java</code> with sequence, name, short name, I/O files.</li>
+  <li>Rebuild &amp; test.</li>
+</ol>
+
+<div class="note"><strong>Key Rules for Agent Prompts:</strong>
+<ul>
+  <li>Output discipline is critical — agents must not produce narration or "thinking" text.</li>
+  <li>Mermaid diagrams are mandatory for HLD agent (enforced in prompt).</li>
+  <li>TDD agent must produce &ge;70% compilable test code.</li>
+  <li>Coding agent outputs must compile and run without modification.</li>
+</ul>
+</div>
+
+<!-- ============================================================ -->
+<!-- 3. INVOKING GITHUB CLI FROM CODE -->
+<!-- ============================================================ -->
+<h2 id="sec3">3. Invoking GitHub CLI Directly from Code</h2>
+
+<h3>How AxiomDSF Calls Copilot</h3>
+<p>
+The class <code>CopilotAgentService.java</code> (in the <code>business</code> module) launches Copilot as an
+<strong>OS process</strong> via Java's <code>ProcessBuilder</code>.
+</p>
+
+<h4>The Command Constructed</h4>
+<pre>
+copilot.cmd --agent {AgentName}
+            -p "{combined prompt text}"
+            --allow-all
+            --no-ask-user
+            --output-format text
+            --add-dir .github
+            --add-dir {workspace-directory}
+</pre>
+
+<h4>Execution Flow Inside <code>CopilotAgentService</code></h4>
+<ol>
+  <li><strong>Prompt Preparation</strong> — A combined <code>_Prompt.md</code> file is created containing agent name, project context, output file reference, detailed instructions, and full input content.</li>
+  <li><strong>Process Launch</strong> — <code>ProcessBuilder</code> starts <code>copilot.cmd</code> with the arguments above. Working directory is set to the workspace root. Stderr is redirected to stdout. Stdin is redirected to NUL (EOF).</li>
+  <li><strong>Monitoring</strong> — A background thread reads stdout to prevent pipe buffer blocking. The main thread waits with a configurable timeout (default 60 minutes).</li>
+  <li><strong>Output Collection</strong> — Preferred: read from the output file the agent was instructed to write. Fallback: use captured stdout.</li>
+  <li><strong>Sanitisation</strong> — CLI noise is stripped using regex patterns (tool-use bullets, session stats, narration lines). Clean markdown is written back to the output file.</li>
+</ol>
+
+<h4>Key Method Signatures</h4>
+<pre>
+public String invokeAgent(Workspace workspace, String agentName)
+public String invokeAgent(Workspace workspace, String agentName, Long userStoryId)
+</pre>
+
+<h4>Output Sanitisation Patterns Removed</h4>
+<pre>
+Lines starting with: ●, ✗, └, "Path does not", "Total usage est:",
+"API time spent:", "Total session time:" ...
+
+Narration patterns truncated at:
+"I need to write", "Let me create", "$outputPath", "## Write the file"
+</pre>
+
+<div class="tip"><strong>Tip:</strong> If you need to debug agent invocation, look at the <code>_Prompt.md</code> file generated inside each agent's output directory — it contains the exact prompt sent to Copilot.</div>
+
+<!-- ============================================================ -->
+<!-- 4. AXIOM DSF -->
+<!-- ============================================================ -->
+<h2 id="sec4">4. Axiom DSF — Core Idea &amp; Architecture</h2>
+
+<h3>What is AxiomDSF?</h3>
+<p>
+<strong>AxiomDSF (Axiom Development Software Factory)</strong> is a multi-module application that automates the
+entire Software Development Lifecycle (SDLC) using a pipeline of 10 AI agents. You provide a raw software
+requirement and the system produces — through a chain of AI-driven steps — refined requirements, architecture
+documents, user stories, test cases, implementation code, code analysis, and a security report.
+</p>
+
+<h3>High-Level Architecture</h3>
+<div class="flow-box">
+┌─────────────────────────────────────────────────────────────────┐
+│                        AxiomDSF System                          │
+│                                                                 │
+│  ┌──────────┐   ┌──────────────┐   ┌────────────────────────┐  │
+│  │ Angular  │   │  Spring Boot │   │   GitHub Copilot CLI   │  │
+│  │ Frontend │──▶│  REST API    │──▶│   (10 AI Agents)       │  │
+│  │ (Port    │   │  (Port 8080) │   │                        │  │
+│  │  4200)   │   │              │   └────────────────────────┘  │
+│  └──────────┘   │              │                                │
+│                 │              │   ┌────────────────────────┐  │
+│  ┌──────────┐   │              │──▶│   Azure DevOps API     │  │
+│  │   CLI    │──▶│              │   │   (Wiki, Work Items,   │  │
+│  │  (REPL)  │   │              │   │    Branches)           │  │
+│  └──────────┘   └──────┬───────┘   └────────────────────────┘  │
+│                        │                                        │
+│                 ┌──────▼───────┐                                │
+│                 │   SQLite DB  │                                │
+│                 │ (axiomdsf.db)│                                │
+│                 └──────────────┘                                │
+└─────────────────────────────────────────────────────────────────┘
+</div>
+
+<h3>Technology Stack</h3>
+<table>
+  <tr><th>Layer</th><th>Technology</th></tr>
+  <tr><td>Backend Framework</td><td>Spring Boot 4.0.3, Java 17</td></tr>
+  <tr><td>Build Tool</td><td>Maven (multi-module)</td></tr>
+  <tr><td>Database</td><td>SQLite 3.45 with Hibernate Community Dialects (WAL mode, pool size 1)</td></tr>
+  <tr><td>API Documentation</td><td>SpringDoc OpenAPI / Swagger UI 2.5.0</td></tr>
+  <tr><td>Frontend</td><td>Angular 17, Angular Material, TypeScript 5.2, RxJS 7</td></tr>
+  <tr><td>AI Integration</td><td>GitHub Copilot CLI (process-based invocation)</td></tr>
+  <tr><td>External Services</td><td>Azure DevOps REST API (branches, wikis, work items)</td></tr>
+  <tr><td>CLI</td><td>Standalone Java JAR (JARs-with-dependencies)</td></tr>
+  <tr><td>Async Execution</td><td>ThreadPoolTaskExecutor (4–8 core threads)</td></tr>
+</table>
+
+<h3>Maven Modules</h3>
+<table>
+  <tr><th>Module</th><th>Artifact ID</th><th>Responsibility</th></tr>
+  <tr><td><code>config</code></td><td>axiomdsf-config</td><td>Shared configuration, application.yaml, agent pipeline properties</td></tr>
+  <tr><td><code>persistence</code></td><td>axiomdsf-persistence</td><td>JPA entities, Spring Data repositories, port/adapter implementations</td></tr>
+  <tr><td><code>business</code></td><td>axiomdsf-business</td><td>Core services, DTOs, orchestrator, agent invocation, MCP tools</td></tr>
+  <tr><td><code>gateway</code></td><td>axiomdsf-gateway</td><td>External API integrations (Azure DevOps)</td></tr>
+  <tr><td><code>resource</code></td><td>studentapi-resource</td><td>REST controllers, Spring Boot main class, OpenAPI config</td></tr>
+  <tr><td><code>frontend</code></td><td>frontend</td><td>Angular 17 web application</td></tr>
+  <tr><td><code>CommandLineInterface</code></td><td>axiomdsf-cli</td><td>Standalone CLI for local workspace/workflow orchestration</td></tr>
+</table>
+
+<!-- ============================================================ -->
+<!-- 5. DESIGN PATTERNS -->
+<!-- ============================================================ -->
+<h2 id="sec5">5. Design Patterns</h2>
+
+<h3>Hexagonal Architecture (Ports &amp; Adapters)</h3>
+<p>
+The codebase strictly follows <strong>Hexagonal Architecture</strong>. Business logic never depends on
+infrastructure — it talks through interfaces (ports).
+</p>
+<div class="flow-box">
+              ┌─────────────────────────────────┐
+              │     REST Controllers (resource)  │  ◀── Inbound Adapter
+              └──────────────┬──────────────────┘
+                             │ calls
+              ┌──────────────▼──────────────────┐
+              │  Use Case Ports (business/port)  │  ◀── Inbound Port
+              │  WorkflowUseCase                 │
+              │  WorkspaceUseCase                │
+              └──────────────┬──────────────────┘
+                             │ implemented by
+              ┌──────────────▼──────────────────┐
+              │   Services (business/service)    │  ◀── Application Core
+              │   WorkflowService                │
+              │   OrchestratorService             │
+              └──────────────┬──────────────────┘
+                             │ depends on
+              ┌──────────────▼──────────────────┐
+              │ Persistence Ports (port/out)     │  ◀── Outbound Port
+              │ WorkflowPersistencePort          │
+              │ WorkspacePersistencePort          │
+              └──────────────┬──────────────────┘
+                             │ implemented by
+              ┌──────────────▼──────────────────┐
+              │ Adapters (persistence/adapter)   │  ◀── Outbound Adapter
+              │ WorkflowPersistenceAdapter       │
+              └──────────────┬──────────────────┘
+                             │ uses
+              ┌──────────────▼──────────────────┐
+              │ Spring Data JPA Repositories     │
+              │ SQLite Database                  │
+              └─────────────────────────────────┘
+</div>
+
+<h3>Other Patterns Used</h3>
+<table>
+  <tr><th>Pattern</th><th>Where</th><th>Description</th></tr>
+  <tr><td>State Machine</td><td><code>AgentState.java</code></td><td>Explicit state enum with <code>canTransitionTo()</code> validation: INIT → IN_PROGRESS → IN_REVIEW → APPROVED/REWORK/FAILED</td></tr>
+  <tr><td>Event Sourcing (Audit)</td><td><code>AgentStateTransition</code> entity</td><td>Every state change is recorded as an immutable transition row</td></tr>
+  <tr><td>Pipeline / Chain of Responsibility</td><td><code>AgentPipelineProperties</code></td><td>Agents linked via <code>nextAgent</code> field forming an ordered chain</td></tr>
+  <tr><td>Async Task Execution</td><td><code>agentExecutor</code> thread pool</td><td>Agent invocations run asynchronously; UI/API returns immediately</td></tr>
+  <tr><td>Template Method</td><td>Agent markdown files</td><td>AIM model provides a consistent template all agents follow</td></tr>
+  <tr><td>Repository Pattern</td><td>Spring Data JPA repos</td><td>Database access abstracted behind repository interfaces</td></tr>
+  <tr><td>DTO Pattern</td><td><code>CreateWorkspaceRequest</code>, etc.</td><td>Request/Response DTOs decouple API layer from domain</td></tr>
+</table>
+
+<!-- ============================================================ -->
+<!-- 6. AGENTS IN THE SYSTEM -->
+<!-- ============================================================ -->
+<h2 id="sec6">6. Agents in the System</h2>
+
+<p>AxiomDSF has <strong>10 AI agents</strong>, each responsible for one phase of the SDLC. They execute sequentially, with each agent's output becoming the next agent's input.</p>
+
+<table>
+  <tr><th>#</th><th>Agent Name</th><th>Short</th><th>Role</th><th>Mandatory</th><th>Input File</th><th>Output File</th></tr>
+  <tr><td>1</td><td>RequirementAnalysisRefinementAgent</td><td>REQ</td><td>Transforms raw requirement text into a structured, scoped requirement package with acceptance criteria</td><td>Yes</td><td><code>input_raw_requirement.md</code></td><td><code>output_refined_requirement.md</code></td></tr>
+  <tr><td>2</td><td>HLSAgent</td><td>HLS</td><td>Produces a High-Level Solution: tech stack, architecture decisions, component overview, NFRs, risks, deployment strategy</td><td>Yes</td><td><code>input_refined_requirement.md</code></td><td><code>output_high_level_solution.md</code></td></tr>
+  <tr><td>3</td><td>HLDAgent</td><td>HLD</td><td>High-Level Design with container decomposition, component interactions, integration points, Mermaid diagrams</td><td>Yes</td><td><code>input_hls_solution.md</code></td><td><code>output_high_level_design.md</code></td></tr>
+  <tr><td>4</td><td>UserStoryAgent</td><td>US</td><td>Converts HLD into INVEST-compliant user stories (As a… I want… so that…), acceptance criteria, edge cases</td><td>Yes</td><td><code>input_hld_blueprint.md</code></td><td><code>output_user_stories.md</code></td></tr>
+  <tr><td>5</td><td>TRReviewAgent</td><td>TR</td><td>Test Review — generates BDD Gherkin scenarios, test coverage plan</td><td>No</td><td><code>input_user_stories.md</code></td><td><code>output_test_review.md</code></td></tr>
+  <tr><td>6</td><td>LLDAgent</td><td>LLD</td><td>Low-Level Design — class definitions, method signatures, data models, sequence flows</td><td>Yes</td><td><code>input_trreview_and_hld.md</code></td><td><code>output_low_level_design.md</code></td></tr>
+  <tr><td>7</td><td>TDDAgent</td><td>TDD</td><td>Converts BDD scenarios into compilable, runnable test code (≥70% code, framework-specific)</td><td>No</td><td><code>input_lld_and_trreview.md</code></td><td><code>output_tdd_test_strategy.md</code></td></tr>
+  <tr><td>8</td><td>CodingAgent</td><td>CODE</td><td>Implements all source code from LLD specs and TDD test cases — must compile and run without changes</td><td>Yes</td><td><code>input_lld_and_tdd.md</code></td><td><code>output_implemented_code.md</code></td></tr>
+  <tr><td>9</td><td>StaticCodeAnalysisAgent</td><td>SCA</td><td>Code quality analysis — smells, complexity, duplication, technical debt, fix recommendations</td><td>No</td><td><code>input_source_code.md</code></td><td><code>output_static_analysis.md</code></td></tr>
+  <tr><td>10</td><td>SecurityAgent</td><td>SEC</td><td>Security audit — vulnerabilities, CWE/OWASP mapping, CVSS scores, remediation steps</td><td>No</td><td><code>input_security_code.md</code></td><td><code>output_security_analysis.md</code></td></tr>
+</table>
+
+<h3>Agent Chaining</h3>
+<p>Each agent's YAML config has a <code>nextAgent</code> field creating a linked chain:</p>
+<div class="flow-box">
+REQ ──▶ HLS ──▶ HLD ──▶ UserStory ──▶ TRReview ──▶ LLD ──▶ TDD ──▶ Coding ──▶ SCA ──▶ Security
+ (1)     (2)     (3)       (4)          (5)        (6)     (7)      (8)       (9)       (10)
+</div>
+
+<h3>What Each Agent Produces (Detail)</h3>
+
+<h4>Agent 1 — RequirementAnalysisRefinementAgent</h4>
+<ul>
+  <li>Structured Summary of the requirement</li>
+  <li>Refined Scope (in-scope / out-of-scope)</li>
+  <li>Constraints and assumptions</li>
+  <li>Open Questions (minimal, precise)</li>
+  <li>Deterministic, testable Acceptance Criteria</li>
+  <li>Handoff Summary for the HLS Agent</li>
+</ul>
+
+<h4>Agent 2 — HLSAgent</h4>
+<ul>
+  <li>Architecture overview and decisions</li>
+  <li>Tech stack selection with justification</li>
+  <li>Component overview</li>
+  <li>Non-Functional Requirements (NFRs)</li>
+  <li>Risks and mitigation</li>
+  <li>Deployment strategy</li>
+</ul>
+
+<h4>Agent 3 — HLDAgent</h4>
+<ul>
+  <li>System context (actors, boundaries)</li>
+  <li>Container decomposition table (name, responsibility, tech, collaborators)</li>
+  <li>Component interactions per container</li>
+  <li>Integration points (internal/external, sync/async)</li>
+  <li>Use-case sequence descriptions</li>
+  <li><strong>Mandatory: 2+ Mermaid diagrams</strong> (container flowchart + sequence diagram)</li>
+</ul>
+
+<h4>Agent 4 — UserStoryAgent</h4>
+<ul>
+  <li>Individual <code>US-XXX-[Title].md</code> files per story</li>
+  <li>Combined <code>UserStoryAgent_Output.md</code></li>
+  <li>Each story: 300–500 words, "As a… I want… so that…" format</li>
+  <li>3–5 acceptance criteria per story (Given/When/Then)</li>
+  <li>2–3 edge cases, dependencies, TDD tags</li>
+</ul>
+
+<h4>Agent 5 — TRReviewAgent</h4>
+<ul>
+  <li>BDD feature files with Gherkin scenarios</li>
+  <li>Given/When/Then steps, priority tags (P0/P1/P2)</li>
+  <li>Generates test <em>scenarios</em>, not test code (that's TDDAgent's job)</li>
+</ul>
+
+<h4>Agent 6 — LLDAgent</h4>
+<ul>
+  <li>Package structure</li>
+  <li>Class/interface definitions with full method signatures</li>
+  <li>Data models (entities, DTOs, enums)</li>
+  <li>Mermaid sequence diagrams for key flows</li>
+  <li>Error handling strategy, configuration specs</li>
+</ul>
+
+<h4>Agent 7 — TDDAgent</h4>
+<ul>
+  <li>Full, compilable test source files (≥70% code)</li>
+  <li>Framework detection (JUnit 5, pytest, Jest, etc.)</li>
+  <li>Minimum 5 complete test files</li>
+  <li>Organized by priority: P0 → P1 → P2</li>
+</ul>
+
+<h4>Agent 8 — CodingAgent</h4>
+<ul>
+  <li>Every class/interface as <code>### FILE:</code> code block</li>
+  <li>Build files (pom.xml), configs (application.yaml), entry points</li>
+  <li>Backend apps run on port 9090 (not 8080)</li>
+  <li>Must compile, run, and pass all TDD tests without modification</li>
+</ul>
+
+<h4>Agent 9 — StaticCodeAnalysisAgent</h4>
+<ul>
+  <li>Code smell detection, complexity metrics</li>
+  <li>Best practice violations, technical debt assessment</li>
+  <li>Prioritised fix recommendations</li>
+</ul>
+
+<h4>Agent 10 — SecurityAgent</h4>
+<ul>
+  <li>Vulnerability inventory with CVSS scores</li>
+  <li>OWASP Top 10 mapping</li>
+  <li>Compliance gaps (GDPR, etc.)</li>
+  <li>Remediation steps + extra <code>security-report.json</code></li>
+</ul>
+
+<!-- ============================================================ -->
+<!-- 7. HOW THE ORCHESTRATOR WORKS -->
+<!-- ============================================================ -->
+<h2 id="sec7">7. How the Orchestrator Works</h2>
+
+<p>The <strong>OrchestratorService</strong> is the brain of the pipeline. It manages which agent runs when, handles state transitions, and supports both automatic advancement and human approval gates.</p>
+
+<h3>Key Methods</h3>
+<table>
+  <tr><th>Method</th><th>Purpose</th></tr>
+  <tr><td><code>startOrchestration()</code></td><td>Entry point — creates a workflow record (state: INIT), prepares the input file, and queues the first (or specified) agent for async execution.</td></tr>
+  <tr><td><code>advanceToNextAgent()</code></td><td>Called after an agent's output is approved. Loads the selected agents list, finds the next one in sequence, and kicks off orchestration for it.</td></tr>
+  <tr><td><code>reworkAgent()</code></td><td>Re-runs an agent with user feedback. Deletes old output, prepares a new input with rework comments, transitions state from REWORK → IN_PROGRESS.</td></tr>
+  <tr><td><code>initiateAgent()</code></td><td>Creates the Workflow DB record and invokes the agent asynchronously via the thread pool executor.</td></tr>
+  <tr><td><code>invokeAgentInBackground()</code></td><td>Background thread that calls <code>CopilotAgentService</code>, transitions IN_PROGRESS → IN_REVIEW on success, and handles UserStory output parsing.</td></tr>
+  <tr><td><code>processUserStoryOutput()</code></td><td>Special logic for Agent 4 — parses the combined output into individual <code>US-*.md</code> files, saves them to the database, and creates Azure DevOps work items.</td></tr>
+</table>
+
+<h3>State Machine</h3>
+<p>Every workflow/agent execution goes through these states:</p>
+<div class="flow-box">
+                    ┌─────────────────────────────────┐
+                    │                                 │
+                    ▼                                 │
+  INIT ──▶ IN_PROGRESS ──▶ IN_REVIEW ──▶ APPROVED ──▶ (Next Agent)
+                │               │
+                │               ▼
+                │           REWORK ──▶ IN_PROGRESS (loop back)
+                │
+                ▼
+             FAILED
+</div>
+
+<p>The <code>AgentState.canTransitionTo()</code> method enforces valid transitions — you cannot skip states.</p>
+
+<h3>Pipeline Modes</h3>
+<table>
+  <tr><th>Mode</th><th>Behaviour</th></tr>
+  <tr><td><strong>full-sequence</strong></td><td>All 10 agents run sequentially end-to-end for the entire requirement.</td></tr>
+  <tr><td><strong>per-story</strong> (default)</td><td>Agents 1–4 (Requirement → UserStory) run once as a <em>shared pipeline</em>. After User Stories are generated, each story gets its own pipeline from Agent 5–10 (TRReview → Security). Stories can be picked and processed independently.</td></tr>
+</table>
+
+<h3>Async Execution</h3>
+<p>Agent invocations are dispatched to a <code>ThreadPoolTaskExecutor</code> named <code>agentExecutor</code> (4–8 core threads). The API/CLI returns immediately; the agent runs in the background. State transitions are tracked in the database so any client can poll for progress.</p>
+
+<!-- ============================================================ -->
+<!-- 8. END-TO-END SYSTEM FLOW -->
+<!-- ============================================================ -->
+<h2 id="sec8">8. End-to-End System Flow</h2>
+
+<h3>Full Pipeline Sequence</h3>
+<div class="flow-box">
+User provides raw requirement (text or file)
+    │
+    ▼
+┌─────────────────────────────────────────────────────────────┐
+│  Agent 1: RequirementAnalysisRefinementAgent                │
+│  Input:  input_raw_requirement.md                           │
+│  Output: output_refined_requirement.md                      │
+│  → Structured summary, scope, constraints, acceptance       │
+│    criteria, handoff for HLS                                │
+└──────────────────────┬──────────────────────────────────────┘
+      APPROVE          │
+    ┌──────────────────▼──────────────────────────────────────┐
+    │  Agent 2: HLSAgent                                      │
+    │  Input:  output_refined_requirement.md (renamed)        │
+    │  Output: output_high_level_solution.md                  │
+    │  → Architecture, tech stack, NFRs, risks                │
+    └──────────────────┬──────────────────────────────────────┘
+          APPROVE      │
+        ┌──────────────▼──────────────────────────────────────┐
+        │  Agent 3: HLDAgent                                  │
+        │  Output: output_high_level_design.md                │
+        │  → Containers, components, Mermaid diagrams         │
+        └──────────────┬──────────────────────────────────────┘
+              APPROVE  │
+            ┌──────────▼──────────────────────────────────────┐
+            │  Agent 4: UserStoryAgent                        │
+            │  Output: output_user_stories.md + US-*.md files │
+            │  → INVEST user stories, acceptance criteria     │
+            └──────────┬──────────────────────────────────────┘
+                  APPROVE
+                       │
+          ┌────────────┴────────────────────────────┐
+          │  PER-STORY MODE:                        │  FULL-SEQUENCE MODE:
+          │  Pick a story (US-001, US-002...)        │  Continue straight to
+          │  Each story gets Agents 5→10             │  Agent 5 → 10
+          └─────────────────────────────────────────┘
+                       │
+          ┌────────────▼────────────────────────────┐
+          │  Agent 5: TRReviewAgent (optional)      │
+          │  Agent 6: LLDAgent                      │
+          │  Agent 7: TDDAgent (optional)           │
+          │  Agent 8: CodingAgent                   │
+          │  Agent 9: StaticCodeAnalysisAgent (opt)  │
+          │  Agent 10: SecurityAgent (optional)     │
+          └─────────────────────────────────────────┘
+                       │
+                  ✅ PIPELINE COMPLETE
+</div>
+
+<h3>Component Interaction Flow</h3>
+<div class="flow-box">
+REST Controller (resource/)
+    │ calls
+    ▼
+WorkflowService (implements WorkflowUseCase)
+    ├──▶ WorkflowPersistencePort.save()           [Create workflow record]
+    ├──▶ AzureDevOpsIntegrationService             [Create branches, wiki]
+    │       └──▶ AzureDevOpsMcpService             [REST calls to Azure]
+    ├──▶ OrchestratorService.startOrchestration()
+    │       ├──▶ CopilotAgentService.invokeAgent() [Process: copilot.cmd]
+    │       ├──▶ FileStorageService                [Read/write agent files]
+    │       └──▶ EventService.publishEvent()       [Audit logging]
+    └──▶ FileStorageService.saveRequirement()
+</div>
+
+<!-- ============================================================ -->
+<!-- 9. WORKFLOW EXECUTION -->
+<!-- ============================================================ -->
+<h2 id="sec9">9. Workflow Execution</h2>
+
+<h3>Starting a Workflow (Backend API)</h3>
+<ol>
+  <li>Client sends <code>POST /workflow/start</code> with a <code>StartWorkflowRequest</code> (workspaceId, requirementText, selectedAgents, pipelineMode).</li>
+  <li><code>WorkflowController</code> delegates to <code>WorkflowService.startWorkflow()</code>.</li>
+  <li>A <code>Requirement</code> record is saved to the database.</li>
+  <li>If Azure DevOps is enabled, <code>AzureDevOpsIntegrationService.onRequirementCreated()</code> creates branches and wiki structure.</li>
+  <li><code>OrchestratorService.startOrchestration()</code> is called — it creates a <code>Workflow</code> record in INIT state and dispatches the first agent asynchronously.</li>
+  <li>The API returns immediately with the workflow ID and status.</li>
+</ol>
+
+<h3>Approving / Reworking</h3>
+<ol>
+  <li>Client sends <code>POST /workflow/approve</code> with <code>WorkflowApprovalRequest</code> (workspaceId, requirementId, agentNumber, decision: APPROVE | REJECT | REWORK, comments).</li>
+  <li>On <strong>APPROVE</strong>: state transitions to APPROVED, then <code>advanceToNextAgent()</code> kicks off the next agent.</li>
+  <li>On <strong>REWORK</strong>: state transitions to REWORK. The agent is re-invoked with the original input + user feedback comments appended.</li>
+  <li>On <strong>REJECT</strong>: pipeline stops at that point.</li>
+</ol>
+
+<h3>Per-Story Workflow</h3>
+<ol>
+  <li>After Agent 4 (UserStory) completes, individual story files are created and saved.</li>
+  <li>User picks a story via <code>pick-story</code> (CLI) or the UI.</li>
+  <li>A new sub-pipeline starts from Agent 5 scoped to that specific user story.</li>
+  <li>Each agent within the per-story pipeline has its own approval gate.</li>
+  <li>Multiple stories can be processed independently (different user story IDs).</li>
+</ol>
+
+<h3>Key Data Model</h3>
+<pre>
+Workspace (1) ──▶ (N) Requirement
+Workspace (1) ──▶ (N) UserStory
+Workspace (1) ──▶ (N) Workflow
+Workspace (1) ──▶ (N) Event
+
+Workflow (1) ──▶ (N) AgentStateTransition
+
+Workflow fields:
+  id, workspaceId, requirementId, userStoryId, agentName,
+  state, sequenceNumber, inputFilePath, outputFilePath,
+  inputWikiUrl, outputWikiUrl, completionStatus,
+  pipelineMode, selectedAgents, createdAt
+</pre>
+
+<!-- ============================================================ -->
+<!-- 10. COMMAND LINE INTERFACE -->
+<!-- ============================================================ -->
+<h2 id="sec10">10. Command Line Interface (CLI)</h2>
+
+<h3>Overview</h3>
+<p>
+The CLI (<code>CommandLineInterface</code> module) is a standalone Java application that provides a
+<strong>REPL (Read-Eval-Print Loop)</strong> for orchestrating the entire SDLC pipeline from a terminal.
+It communicates with the Spring Boot backend via REST API and can also invoke Copilot directly.
+</p>
+
+<h3>Key Classes</h3>
+<table>
+  <tr><th>Class</th><th>Purpose</th></tr>
+  <tr><td><code>AxiomDsfCli</code></td><td>Main entry point. Displays banner, starts the <code>pipeline&gt;</code> prompt, and loops reading commands.</td></tr>
+  <tr><td><code>CommandRouter</code></td><td>Parses the first word of input and routes to the correct handler: <code>workspace</code>, <code>workflow</code>, <code>help</code>, <code>exit</code>.</td></tr>
+  <tr><td><code>WorkspaceCommandHandler</code></td><td>Handles <code>workspace create</code>, <code>workspace list</code>, <code>workspace get</code>. Creates workspace directories, syncs to backend API.</td></tr>
+  <tr><td><code>WorkflowCommandHandler</code></td><td>Handles <code>workflow start</code>, <code>workflow status</code>, <code>workflow approve</code>, <code>workflow output</code>, <code>workflow run-agent</code>, <code>workflow pick-story</code>, <code>workflow approve-story</code>, <code>workflow story-status</code>. Invokes Copilot directly and polls for output.</td></tr>
+  <tr><td><code>AgentRegistry</code></td><td>Defines the 10-agent pipeline with sequence numbers, names, short names, and I/O file paths.</td></tr>
+  <tr><td><code>ApiClient</code></td><td>HTTP client (Java HttpClient) for REST calls to <code>http://localhost:8080</code>. 30-second timeout.</td></tr>
+  <tr><td><code>WorkspaceManager</code></td><td>File-based workspace state management (creates directories, writes JSON state).</td></tr>
+  <tr><td><code>PipelineState</code></td><td>In-memory + file-based state tracking per workspace (<code>state.json</code> with file locking).</td></tr>
+</table>
+
+<h3>CLI Commands Reference</h3>
+<table>
+  <tr><th>Command</th><th>Description</th></tr>
+  <tr><td><code>workspace create --name &lt;n&gt; --desc &lt;d&gt; --tech &lt;t&gt;</code></td><td>Create a new workspace directory with project metadata</td></tr>
+  <tr><td><code>workspace list</code></td><td>List all workspaces (table format: ID, name, tech, requirements)</td></tr>
+  <tr><td><code>workspace get --name &lt;name&gt;</code></td><td>Show workspace details + associated requirements</td></tr>
+  <tr><td><code>workflow start --workspace &lt;id&gt; --text "&lt;req&gt;"</code></td><td>Start a new workflow with inline requirement text</td></tr>
+  <tr><td><code>workflow start --workspace &lt;id&gt; --file &lt;path&gt;</code></td><td>Start a new workflow from a requirement file</td></tr>
+  <tr><td><code>workflow status --workspace &lt;id&gt; --requirement &lt;id&gt;</code></td><td>Check current agent progress and state</td></tr>
+  <tr><td><code>workflow approve --workspace &lt;id&gt; --requirement &lt;id&gt;</code></td><td>Approve/reject/rework the current agent output (interactive)</td></tr>
+  <tr><td><code>workflow output --agent &lt;1-10&gt; --workspace &lt;id&gt;</code></td><td>View the output of a specific agent</td></tr>
+  <tr><td><code>workflow run-agent --workspace &lt;id&gt; --agent &lt;name&gt;</code></td><td>Run a single agent directly</td></tr>
+  <tr><td><code>workflow pick-story --workspace &lt;id&gt; --requirement &lt;id&gt; --story US-001</code></td><td>Start per-story pipeline for a specific user story</td></tr>
+  <tr><td><code>workflow approve-story --workspace &lt;id&gt; --requirement &lt;id&gt; --story US-001</code></td><td>Approve current agent in a story pipeline</td></tr>
+  <tr><td><code>workflow story-status --workspace &lt;id&gt; --requirement &lt;id&gt;</code></td><td>View status of all story pipelines</td></tr>
+  <tr><td><code>help</code></td><td>Show all commands and pipeline overview</td></tr>
+  <tr><td><code>exit</code></td><td>Exit the CLI</td></tr>
+</table>
+
+<h3>How the CLI Invokes Copilot</h3>
+<ol>
+  <li>The CLI auto-detects <code>copilot.cmd</code> on the system PATH (runs <code>copilot --version</code> to verify).</li>
+  <li>It constructs the same command the backend uses (agent name, prompt, <code>--allow-all</code>, etc.).</li>
+  <li>Output is polled every 3 seconds, checking the agent output file (up to ~5 hours timeout).</li>
+  <li>CLI noise is filtered using the same regex patterns as the backend.</li>
+</ol>
+
+<!-- ============================================================ -->
+<!-- 11. USER INTERFACE -->
+<!-- ============================================================ -->
+<h2 id="sec11">11. User Interface (Angular Frontend)</h2>
+
+<h3>Overview</h3>
+<p>
+The frontend is an <strong>Angular 17</strong> single-page application with <strong>Angular Material</strong>
+components. It communicates with the Spring Boot backend at <code>http://localhost:8080</code>.
+</p>
+
+<h3>Pages &amp; Routing</h3>
+<table>
+  <tr><th>Route</th><th>Component</th><th>Description</th></tr>
+  <tr><td><code>/dashboard</code></td><td>DashboardComponent</td><td>Welcome page with live health indicator (UP/DOWN, memory, uptime), workspace/workflow stats, time-based greeting</td></tr>
+  <tr><td><code>/workspaces</code></td><td>WorkspaceListComponent</td><td>Grid of workspace cards (project name, tech stack, pipeline mode, Azure DevOps indicator). Delete support. Empty state messaging.</td></tr>
+  <tr><td><code>/workspaces/create</code></td><td>WorkspaceCreateComponent</td><td>Multi-section form: Basic Info + Azure DevOps config (collapsible) + Pipeline Mode selector. Reactive form validation. Tech stack dependency suggestions.</td></tr>
+  <tr><td><code>/workspaces/:id</code></td><td>WorkspaceDetailComponent</td><td>Workspace details with associated workflows list</td></tr>
+  <tr><td><code>/workflow/start</code></td><td>WorkflowStartComponent</td><td>Start a new workflow — select workspace, paste/upload requirement</td></tr>
+  <tr><td><code>/workflow/status</code></td><td>WorkflowStatusComponent</td><td>Real-time workflow status with agent progress visualisation</td></tr>
+  <tr><td><code>/devops</code></td><td>DevOpsIntegrationComponent</td><td>Azure DevOps configuration and sync controls</td></tr>
+  <tr><td><code>/about</code></td><td>AboutComponent</td><td>Project information and architecture overview</td></tr>
+</table>
+
+<h3>Key Services</h3>
+<table>
+  <tr><th>Service</th><th>Base URL</th><th>Methods</th></tr>
+  <tr><td><code>workspace.service.ts</code></td><td><code>/workspace</code></td><td><code>listWorkspaces()</code>, <code>getWorkspaceById(id)</code>, <code>createWorkspace(data)</code>, <code>updateWorkspace(id, data)</code>, <code>deleteWorkspace(id)</code>, <code>getWorkspaceByName(name)</code>, <code>validateAzureDevOpsConnection(config)</code></td></tr>
+  <tr><td><code>workflow.service.ts</code></td><td><code>/workflow</code></td><td>Start, approve, status, list workflows</td></tr>
+  <tr><td><code>system.service.ts</code></td><td><code>/api/health</code></td><td>Health check, memory, uptime, stats</td></tr>
+  <tr><td><code>requirement.service.ts</code></td><td><code>/requirement</code></td><td>CRUD for requirements</td></tr>
+  <tr><td><code>devops.service.ts</code></td><td><code>/workspace</code></td><td>Azure DevOps validation</td></tr>
+</table>
+
+<h3>UI Features</h3>
+<ul>
+  <li><strong>Sidebar navigation</strong> with active route highlighting and dynamic workspace shortcuts</li>
+  <li><strong>Dark mode</strong> toggle with theme colour configuration</li>
+  <li><strong>Responsive design</strong> — sidebar collapses on mobile</li>
+  <li><strong>Login screen</strong> — gated behind <code>isLoggedIn</code> flag</li>
+  <li><strong>Live health</strong> — pulsing indicator showing backend UP/DOWN status</li>
+  <li><strong>Animated stat cards</strong> on dashboard (workspace count, workflow count, agent count)</li>
+</ul>
+
+<!-- ============================================================ -->
+<!-- 12. MCP INTEGRATION -->
+<!-- ============================================================ -->
+<h2 id="sec12">12. MCP Integration (Azure DevOps)</h2>
+
+<h3>What is MCP?</h3>
+<p>
+<strong>Model Context Protocol (MCP)</strong> is a mechanism that lets AI agents call external tools.
+In AxiomDSF, MCP tools allow the orchestrator to interact with Azure DevOps (create branches, save files,
+manage work items) as part of the agent pipeline.
+</p>
+
+<h3>Key MCP Classes</h3>
+
+<h4>AzureDevOpsMcpTools.java</h4>
+<p>Defines Spring AI Function Calling tools as <code>Function&lt;Request, Response&gt;</code> beans:</p>
+<table>
+  <tr><th>Tool Function</th><th>Purpose</th></tr>
+  <tr><td><code>createWorkspaceBranch()</code></td><td>Creates a workspace branch in Azure DevOps repository</td></tr>
+  <tr><td><code>createRequirementFolder()</code></td><td>Creates per-requirement folder structure (Mode 1 per-story pipeline)</td></tr>
+  <tr><td><code>createUserStoryFolder()</code></td><td>Creates story-level folder structures</td></tr>
+  <tr><td><code>saveAgentFile()</code></td><td>Persists agent input/output files to the repository</td></tr>
+  <tr><td><code>readFile()</code></td><td>Reads file content from the repository</td></tr>
+  <tr><td><code>createWorkItem()</code></td><td>Creates Azure DevOps work items (User Stories, Test Cases)</td></tr>
+  <tr><td><code>queryWorkItems()</code></td><td>Queries work items by type/state</td></tr>
+</table>
+
+<h4>AzureDevOpsMcpService.java</h4>
+<p>Core protocol implementation that makes REST calls to the Azure DevOps API:</p>
+<ul>
+  <li><strong>Branch management</strong>: <code>createWorkspaceBranch()</code>, <code>createUserStoryBranch()</code> (refs/heads/…)</li>
+  <li><strong>Repository cleanup</strong>: <code>cleanBranch()</code> deletes all inherited files from parent branch</li>
+  <li><strong>Initial commit handling</strong>: <code>createInitialCommit()</code> handles empty repository scenarios</li>
+  <li><strong>Conflict handling</strong>: Idempotent operations with HTTP 409 conflict tolerance</li>
+  <li><strong>SSL/TLS</strong>: Creates a self-signed certificate-trusting <code>RestTemplate</code> for internal corporate environments</li>
+</ul>
+
+<h4>AzureDevOpsIntegrationService.java</h4>
+<p>High-level orchestration service that ties MCP operations into the workflow lifecycle:</p>
+<ul>
+  <li><code>onRequirementCreated(workspaceId, requirementId)</code> — Called when a workflow starts; cleans the repo branch, creates folder structures, creates wiki branch, publishes code wiki with a home page.</li>
+</ul>
+
+<h3>Azure DevOps Configuration</h3>
+<p>When creating a workspace with Azure DevOps enabled, provide:</p>
+<table>
+  <tr><th>Field</th><th>Description</th></tr>
+  <tr><td>Organization URL</td><td>e.g. <code>https://dev.azure.com/your-org</code></td></tr>
+  <tr><td>Project</td><td>Azure DevOps project name</td></tr>
+  <tr><td>Repository</td><td>Target Git repository name</td></tr>
+  <tr><td>Personal Access Token</td><td>PAT with Code (Read/Write), Wiki, Work Items permissions</td></tr>
+  <tr><td>Development Branch</td><td>Branch for code (default: workspace name-based)</td></tr>
+  <tr><td>Wiki Branch</td><td>Branch for wiki content</td></tr>
+</table>
+
+<!-- ============================================================ -->
+<!-- 13. COMMANDS TO RUN -->
+<!-- ============================================================ -->
+<h2 id="sec13">13. Commands to Build &amp; Run the Application</h2>
+
+<h3>Prerequisites</h3>
+<ul>
+  <li><strong>Java 17+</strong> (JDK, not JRE)</li>
+  <li><strong>Maven 3.9+</strong> (or use the bundled <code>mvnw</code> / <code>mvnw.cmd</code>)</li>
+  <li><strong>Node.js &ge; 18</strong> and <strong>npm</strong> (for the Angular frontend)</li>
+  <li><strong>GitHub Copilot CLI</strong> installed and authenticated (see Section 1)</li>
+</ul>
+
+<h3>Backend (Spring Boot)</h3>
+<pre>
+# Navigate to project root
+cd AxiomDSF
+
+# Full build (all modules)
+mvnw.cmd clean install -DskipTests
+
+# Run the Spring Boot application (port 8080)
+mvnw.cmd -pl resource spring-boot:run
+
+# Or run the built JAR directly
+java -jar resource\target\studentapi-resource-0.0.1-SNAPSHOT.jar
+</pre>
+
+<div class="note"><strong>Note:</strong> The database file <code>data/axiomdsf.db</code> (SQLite) is auto-used. DDL is set to <code>none</code> — the schema must already exist. If starting fresh, ensure the database has the required tables.</div>
+
+<h3>Frontend (Angular)</h3>
+<pre>
+# Navigate to the frontend module
+cd frontend\frontend
+
+# Install dependencies
+npm install
+
+# Start the development server (port 4200)
+ng serve
+# or
+npm start
+
+# Build for production
+ng build --configuration production
+</pre>
+<p>The Angular app proxies API calls to <code>http://localhost:8080</code>.</p>
+
+<h3>CLI (Command Line Interface)</h3>
+<pre>
+# Build the CLI JAR
+mvnw.cmd -pl CommandLineInterface clean package -DskipTests
+
+# Run the CLI
+java -jar CommandLineInterface\target\axiomdsf-cli-1.0-SNAPSHOT-jar-with-dependencies.jar
+
+# The CLI starts a REPL:
+# pipeline> help
+# pipeline> workspace create --name "my-project" --desc "Demo" --tech "Java, Spring Boot"
+# pipeline> workflow start --workspace 1 --text "Build a todo app with REST API"
+</pre>
+
+<h3>Quick Start (All Components)</h3>
+<pre>
+# Terminal 1 — Backend
+mvnw.cmd clean install -DskipTests &amp;&amp; mvnw.cmd -pl resource spring-boot:run
+
+# Terminal 2 — Frontend
+cd frontend\frontend &amp;&amp; npm install &amp;&amp; ng serve
+
+# Terminal 3 — CLI (optional)
+java -jar CommandLineInterface\target\axiomdsf-cli-1.0-SNAPSHOT-jar-with-dependencies.jar
+</pre>
+
+<h3>Access Points</h3>
+<table>
+  <tr><th>Component</th><th>URL</th></tr>
+  <tr><td>Backend API</td><td><code>http://localhost:8080</code></td></tr>
+  <tr><td>Swagger UI</td><td><code>http://localhost:8080/swagger-ui.html</code></td></tr>
+  <tr><td>Frontend UI</td><td><code>http://localhost:4200</code></td></tr>
+  <tr><td>Health Check</td><td><code>http://localhost:8080/api/health</code></td></tr>
+</table>
+
+<h3>Common API Endpoints</h3>
+<table>
+  <tr><th>Method</th><th>Endpoint</th><th>Description</th></tr>
+  <tr><td>POST</td><td><code>/workspace/create</code></td><td>Create a workspace</td></tr>
+  <tr><td>GET</td><td><code>/workspace/list</code></td><td>List all workspaces</td></tr>
+  <tr><td>GET</td><td><code>/workspace/{id}</code></td><td>Get workspace by ID</td></tr>
+  <tr><td>DELETE</td><td><code>/workspace/{id}</code></td><td>Delete workspace</td></tr>
+  <tr><td>POST</td><td><code>/workflow/start</code></td><td>Start a workflow</td></tr>
+  <tr><td>GET</td><td><code>/workflow/status/{wsId}/{reqId}</code></td><td>Get workflow status</td></tr>
+  <tr><td>POST</td><td><code>/workflow/approve</code></td><td>Approve/reject/rework agent output</td></tr>
+  <tr><td>GET</td><td><code>/workflow/all</code></td><td>List all workflows</td></tr>
+  <tr><td>GET</td><td><code>/api/health</code></td><td>System health &amp; stats</td></tr>
+</table>
+
+<!-- ============================================================ -->
+<!-- 14. PROJECT DIRECTORY REFERENCE -->
+<!-- ============================================================ -->
+<h2 id="sec14">14. Project Directory Reference</h2>
+
+<pre>
+AxiomDSF/
+├── .github/
+│   └── agents/                              # Copilot agent definition files
+│       ├── RequirementAnalysisRefinementAgent.agent.md
+│       ├── HLSAgent.agent.md
+│       ├── HLDAgent.agent.md
+│       ├── UserStoryAgent.agent.md
+│       ├── TRReviewAgent.agent.md
+│       ├── LLDAgent.agent.md
+│       ├── TDDAgent.agent.md
+│       ├── CodingAgent.agent.md
+│       ├── StaticCodeAnalysisAgent.agent.md
+│       └── SecurityAgent.agent.md
+│
+├── config/                                  # Shared configuration module
+│   └── src/main/resources/
+│       └── application.yaml                 # DB, pipeline, agent settings
+│
+├── persistence/                             # Database layer
+│   └── src/main/java/.../
+│       ├── entity/                          # JPA entities (Workspace, Workflow, etc.)
+│       ├── repository/                      # Spring Data JPA repositories
+│       ├── adapter/                         # Port implementations (Hexagonal)
+│       └── port/out/                        # Outbound port interfaces
+│
+├── business/                                # Core business logic
+│   └── src/main/java/.../
+│       ├── service/
+│       │   ├── OrchestratorService.java     # Pipeline orchestration engine
+│       │   ├── CopilotAgentService.java     # Copilot CLI invocation
+│       │   ├── WorkflowService.java         # Workflow CRUD &amp; state
+│       │   ├── WorkspaceService.java        # Workspace management
+│       │   ├── AzureDevOpsIntegrationService.java
+│       │   ├── AzureDevOpsMcpService.java   # MCP protocol impl
+│       │   ├── EventService.java            # Audit events
+│       │   ├── FileStorageService.java      # File I/O
+│       │   └── mcp/
+│       │       └── AzureDevOpsMcpTools.java # MCP tool functions
+│       ├── dto/                             # Request/Response DTOs
+│       ├── model/
+│       │   ├── AgentType.java               # 10-agent enum
+│       │   └── AgentState.java              # State machine enum
+│       ├── config/
+│       │   ├── AgentConfigProperties.java   # Per-agent config
+│       │   └── AgentPipelineProperties.java # Pipeline sequencing
+│       └── port/in/                         # Inbound port interfaces (use cases)
+│
+├── gateway/                                 # External API integrations
+│
+├── resource/                                # REST controllers &amp; Spring Boot main
+│   └── src/main/java/.../
+│       ├── AxiomDsfApplication.java         # Main class (port 8080)
+│       ├── controller/
+│       │   ├── WorkspaceController.java
+│       │   ├── WorkflowController.java
+│       │   ├── SystemController.java        # /api/health
+│       │   ├── RequirementController.java
+│       │   ├── UserStoryController.java
+│       │   └── SpaForwardController.java    # Angular routing support
+│       └── config/
+│           └── WebConfig.java               # CORS configuration
+│
+├── frontend/                                # Angular 17 application
+│   └── frontend/
+│       └── src/app/
+│           ├── app.component.ts             # Root layout + sidebar
+│           ├── app.routes.ts                # Route definitions
+│           ├── services/                    # API service classes
+│           └── pages/                       # Page components
+│               ├── dashboard/
+│               ├── workspace-list/
+│               ├── workspace-create/
+│               ├── workspace-detail/
+│               ├── workflow-start/
+│               ├── workflow-status/
+│               ├── devops-integration/
+│               └── about/
+│
+├── CommandLineInterface/                    # Standalone CLI tool
+│   └── src/main/java/.../cli/
+│       ├── AxiomDsfCli.java                 # REPL main entry
+│       ├── CommandRouter.java               # Command dispatcher
+│       ├── WorkspaceCommandHandler.java
+│       ├── WorkflowCommandHandler.java
+│       ├── AgentRegistry.java               # 10-agent pipeline defs
+│       ├── ApiClient.java                   # REST HTTP client
+│       ├── WorkspaceManager.java            # File-based state
+│       └── PipelineState.java               # State tracking
+│
+├── data/
+│   └── axiomdsf.db                          # SQLite database
+│
+├── workspaces/                              # Sample workspace outputs
+│   ├── workspace-1_to do app/
+│   ├── workspace-4_foody/
+│   └── ...
+│
+├── pom.xml                                  # Parent Maven POM
+├── mvnw / mvnw.cmd                          # Maven wrapper
+├── approve.json                             # Sample approval payload
+└── test-body.json                           # Sample workspace creation payload
+</pre>
+
+<hr>
+
+<div style="text-align:center; color:#999; font-size:9pt; margin-top:40px;">
+  <p>AxiomDSF Project Guide &amp; Tutorial — Prepared for Team Handover — April 2026</p>
+</div>
+
+</body>
+</html>
